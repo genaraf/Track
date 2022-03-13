@@ -49,7 +49,7 @@ func main() {
 
 	server.OnEvent("/", "power", func(s socketio.Conn, val int) {
 		fmt.Printf("power:%d\n", val)
-		exec.Command("sudo", "shoutdown", "now")
+		exec.Command("sudo", "shutdown", "now")
 	})
 
 	server.OnError("/", func(s socketio.Conn, e error) {
