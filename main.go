@@ -8,8 +8,10 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
+	"track/adeept/move"
 
 	socketio "github.com/googollee/go-socket.io"
+	"periph.io/x/host/v3"
 )
 
 var scon socketio.Conn = nil
@@ -31,6 +33,11 @@ func reportLoop() {
 }
 
 func main() {
+	// Load all the drivers:
+	if _, err := host.Init(); err != nil {
+		log.Fatal(err)
+	}
+
 	server := socketio.NewServer(nil)
 
 	server.OnConnect("/", func(s socketio.Conn) error {
@@ -60,6 +67,8 @@ func main() {
 		fmt.Println("closed", reason)
 		scon = nil
 	})
+
+	move.Init()
 
 	go server.Serve()
 	defer server.Close()
